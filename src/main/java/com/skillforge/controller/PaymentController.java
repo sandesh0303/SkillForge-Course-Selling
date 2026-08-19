@@ -62,7 +62,6 @@ public class PaymentController {
             );
 
             if (!valid) {
-
                 return ResponseEntity
                         .status(HttpStatus.BAD_REQUEST)
                         .body(Map.of(
