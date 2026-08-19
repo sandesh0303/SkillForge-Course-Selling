@@ -1,24 +1,54 @@
 package com.skillforge.config;
 
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
+
+import java.util.Arrays;
 
 @Configuration
-public class CorsConfig implements WebMvcConfigurer {
+public class CorsConfig {
 
-    @Override
-    public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/**")
-                .allowedOrigins("*")
-                .allowedMethods(
-                        "GET",
-                        "POST",
-                        "PUT",
-                        "DELETE",
-                        "OPTIONS"
-                )
-                .allowedHeaders("*")
-                .maxAge(3600);
+    @Bean
+    @Order(Ordered.HIGHEST_PRECEDENCE)
+    public CorsFilter corsFilter() {
+
+        CorsConfiguration config = new CorsConfiguration();
+
+        // Allow Netlify frontend and local development
+        config.setAllowedOriginPatterns(Arrays.asList(
+                "https://skillforgecourse.netlify.app",
+                "http://localhost:*",
+                "http://127.0.0.1:*"
+        ));
+
+        config.setAllowedMethods(Arrays.asList(
+                "GET",
+                "POST",
+                "PUT",
+                "DELETE",
+                "PATCH",
+                "OPTIONS"
+        ));
+
+        // Allow all request headers
+        config.setAllowedHeaders(Arrays.asList("*"));
+
+        // We are not using cookies/session authentication
+        config.setAllowCredentials(false);
+
+        // Cache preflight response
+        config.setMaxAge(3600L);
+
+        UrlBasedCorsConfigurationSource source =
+                new UrlBasedCorsConfigurationSource();
+
+        source.registerCorsConfiguration("/**", config);
+
+        return new CorsFilter(source);
     }
 }
