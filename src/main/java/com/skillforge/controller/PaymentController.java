@@ -12,16 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Map;
 
 @RestController
-@CrossOrigin(
-        origins = "https://skillforgecourse.netlify.app",
-        methods = {
-                RequestMethod.GET,
-                RequestMethod.POST,
-                RequestMethod.PUT,
-                RequestMethod.DELETE,
-                RequestMethod.OPTIONS
-        }
-)
+@CrossOrigin(origins = "*")
 @RequestMapping("/api/payment")
 public class PaymentController {
 

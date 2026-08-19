@@ -10,13 +10,7 @@ public class CorsConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOriginPatterns(
-                        "https://skillforgecourse.netlify.app",
-                        "http://localhost:5173",
-                        "http://localhost:5174",
-                        "http://127.0.0.1:5173",
-                        "http://127.0.0.1:5174"
-                )
+                .allowedOrigins("*")
                 .allowedMethods(
                         "GET",
                         "POST",
@@ -25,7 +19,6 @@ public class CorsConfig implements WebMvcConfigurer {
                         "OPTIONS"
                 )
                 .allowedHeaders("*")
-                .allowCredentials(false)
                 .maxAge(3600);
     }
 }
