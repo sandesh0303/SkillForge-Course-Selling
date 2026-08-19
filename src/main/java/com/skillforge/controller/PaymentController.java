@@ -12,6 +12,16 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Map;
 
 @RestController
+@CrossOrigin(
+        origins = "https://skillforgecourse.netlify.app",
+        methods = {
+                RequestMethod.GET,
+                RequestMethod.POST,
+                RequestMethod.PUT,
+                RequestMethod.DELETE,
+                RequestMethod.OPTIONS
+        }
+)
 @RequestMapping("/api/payment")
 public class PaymentController {
 
@@ -22,22 +32,39 @@ public class PaymentController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<?> createOrder(@Valid @RequestBody PaymentRequest request) {
+    public ResponseEntity<?> createOrder(
+            @Valid @RequestBody PaymentRequest request) {
+
         try {
             JSONObject order = razorpayService.createOrder(request);
+
             return ResponseEntity.ok(order.toMap());
+
         } catch (IllegalStateException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(Map.of("message", e.getMessage()));
+
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Map.of(
+                            "message", e.getMessage()
+                    ));
+
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_GATEWAY)
-                    .body(Map.of("message", "Unable to create Razorpay order", "error", e.getMessage()));
+
+            return ResponseEntity
+                    .status(HttpStatus.BAD_GATEWAY)
+                    .body(Map.of(
+                            "message", "Unable to create Razorpay order",
+                            "error", e.getMessage()
+                    ));
         }
     }
 
     @PostMapping("/verify")
-    public ResponseEntity<?> verifyPayment(@Valid @RequestBody PaymentVerifyRequest request) {
+    public ResponseEntity<?> verifyPayment(
+            @Valid @RequestBody PaymentVerifyRequest request) {
+
         try {
+
             boolean valid = razorpayService.verifyPayment(
                     request.getRazorpay_order_id(),
                     request.getRazorpay_payment_id(),
@@ -45,25 +72,42 @@ public class PaymentController {
             );
 
             if (!valid) {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                        .body(Map.of("verified", false, "message", "Invalid payment signature"));
+
+                return ResponseEntity
+                        .status(HttpStatus.BAD_REQUEST)
+                        .body(Map.of(
+                                "verified", false,
+                                "message", "Invalid payment signature"
+                        ));
             }
 
-            // TODO: After successful verification, save the purchase in your DB
-            // and grant the purchased course to the customer.
+            String courseId = request.getCourseId() == null
+                    ? ""
+                    : request.getCourseId();
 
-            String courseId = request.getCourseId() == null ? "" : request.getCourseId();
-            String accessUrl = razorpayService.getCourseAccessUrl(request.getRazorpay_order_id(), courseId);
+            String accessUrl =
+                    razorpayService.getCourseAccessUrl(
+                            request.getRazorpay_order_id(),
+                            courseId
+                    );
 
-            return ResponseEntity.ok(Map.of(
-                    "verified", true,
-                    "message", "Payment verified successfully",
-                    "courseId", courseId,
-                    "accessUrl", accessUrl
-            ));
+            return ResponseEntity.ok(
+                    Map.of(
+                            "verified", true,
+                            "message", "Payment verified successfully",
+                            "courseId", courseId,
+                            "accessUrl", accessUrl
+                    )
+            );
+
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body(Map.of("verified", false, "message", "Payment verification failed"));
+
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body(Map.of(
+                            "verified", false,
+                            "message", "Payment verification failed"
+                    ));
         }
     }
 }
