@@ -6,7 +6,7 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
-import java.util.Arrays;
+import java.util.List;
 
 @Configuration
 public class CorsConfig {
@@ -16,7 +16,7 @@ public class CorsConfig {
 
         CorsConfiguration config = new CorsConfiguration();
 
-        config.setAllowedOrigins(Arrays.asList(
+        config.setAllowedOrigins(List.of(
                 "https://skillforgecourse.netlify.app",
                 "http://localhost:5173",
                 "http://localhost:5174",
@@ -24,7 +24,7 @@ public class CorsConfig {
                 "http://127.0.0.1:5174"
         ));
 
-        config.setAllowedMethods(Arrays.asList(
+        config.setAllowedMethods(List.of(
                 "GET",
                 "POST",
                 "PUT",
@@ -33,9 +33,9 @@ public class CorsConfig {
                 "OPTIONS"
         ));
 
-        config.setAllowedHeaders(Arrays.asList("*"));
+        config.setAllowedHeaders(List.of("*"));
 
-        config.setExposedHeaders(Arrays.asList("*"));
+        config.setExposedHeaders(List.of("*"));
 
         config.setAllowCredentials(false);
 
