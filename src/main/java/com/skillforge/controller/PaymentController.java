@@ -12,30 +12,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.bind.annotation.*;
+
 
 import java.util.Map;
 
 @RestController
 @RequestMapping("/api/payment")
-@CrossOrigin(
-        origins = {
-                "https://skillforgecourse.netlify.app",
-                "http://localhost:5173",
-                "http://localhost:5174",
-                "http://127.0.0.1:5173",
-                "http://127.0.0.1:5174"
-        },
-        methods = {
-                RequestMethod.GET,
-                RequestMethod.POST,
-                RequestMethod.PUT,
-                RequestMethod.DELETE,
-                RequestMethod.PATCH,
-                RequestMethod.OPTIONS
-        },
-        allowedHeaders = "*"
-)
+
 public class PaymentController {
 
     private final RazorpayService razorpayService;
