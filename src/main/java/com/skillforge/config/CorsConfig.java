@@ -17,10 +17,10 @@ public class CorsConfig {
         CorsConfiguration config = new CorsConfiguration();
 
         config.setAllowedOriginPatterns(List.of(
-                "http://localhost:*",
-                "http://127.0.0.1:*",
-                "https://skillforgecourse.netlify.app"
-        ));
+        	    "http://localhost:*",
+        	    "http://127.0.0.1:*",
+        	    "https://skillforgecourse.netlify.app"
+        	));
 
         config.setAllowedMethods(List.of(
                 "GET",
