@@ -16,11 +16,19 @@ public class CorsConfig {
 
         CorsConfiguration config = new CorsConfiguration();
 
-        config.setAllowedOriginPatterns(List.of(
-        	    "http://localhost:*",
-        	    "http://127.0.0.1:*",
-        	    "https://skillforgecourse.netlify.app"
-        	));
+        config.setAllowedOrigins(List.of(
+                "https://skillforgecourse.netlify.app",
+
+                "http://localhost:5173",
+                "http://localhost:5174",
+                "http://localhost:5176",
+                "http://localhost:5177",
+
+                "http://127.0.0.1:5173",
+                "http://127.0.0.1:5174",
+                "http://127.0.0.1:5176",
+                "http://127.0.0.1:5177"
+        ));
 
         config.setAllowedMethods(List.of(
                 "GET",
